@@ -4,5 +4,5 @@ This is an AI Tic Tac Toe game implemented in Java using the MiniMax algorithm w
 ### How to Play
 To play the game, simply run the Main.java file located in the src directory. The game will prompt you to enter your moves and will display the board after each move.
 
-~~~This was create in one day as a personal challenge.~~~
-_Changes were made to logic as initially, the AI was not 100% optimal. Styling changes have also been made._
+~~This was create in one day as a personal challenge.~~
+*Changes were made to logic as initially, the AI was not 100% optimal. Styling changes have also been made.*
