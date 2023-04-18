@@ -2,7 +2,7 @@
 import java.util.Scanner;
 
 public class TicTacToe {
-	
+
 	static int[][] board = new int[3][3];
 	static boolean gameEnd = false;
 	static Scanner input = new Scanner(System.in);
@@ -231,7 +231,7 @@ public class TicTacToe {
 		}
 		else if (howGameEnd() == 1)
 		{
-			//This is not possible
+			//This should not be possible
 			System.out.println("\nYou win!\n");
 			gameEnd = true;
 		}
@@ -242,10 +242,17 @@ public class TicTacToe {
 		}
 	}
 
+	// A win at depth 1 is worth 20 | A win at depth 9 is worth 11;
+	// A draw at depth 1 is worth 10 | A draw at depth 9 is worth 1;
+	// A loss at depth 1 is worth -10 | A loss at depth 9 is worth -1;
+
+	// This scoring system allows for the AI to always make THE best move, rather than A best move.
+
+
 	public static int miniMaxMove()
 	{
 		//Using the MiniMax algorithm to find the best move to play (AI's move)
-		int bestScore = 10;
+		int bestScore = 30;
 		int bestMove = 0;
 		for (int i = 0; i < 3; i++)
 		{
@@ -255,7 +262,7 @@ public class TicTacToe {
 				if (board[i][j] == 0)
 				{
 					board[i][j] = -1;
-					int score = miniMax(board, true, -10, 10);
+					int score = miniMax(true, 30, -20, 0);
 					board[i][j] = 0;
 
 					//New best move
@@ -270,20 +277,27 @@ public class TicTacToe {
 		return bestMove;
 	}
 
-	public static int miniMax(int[][] boardTree, boolean isMaximising, int alpha, int beta)
+	public static int miniMax(boolean isMaximising, int alpha, int beta, int depth)
 	{
 		//Minimax algorithm
 		int result = howGameEnd();
-		if (result == -1 || result == 1 || result == 0)
-		{
-			//Base case
-			return result;
+		if (result == 1) {
+			// Lower depth is a higher win
+			return 20 - depth;
+		}
+		else if (result == 0) {
+			// Lower depth is a higher tie
+			return depth;
+		}
+		else if (result == -1) {
+			// Lower depth is a Higher loss
+			return -10 + depth;
 		}
 		
 		if (isMaximising)
 		{
 			//High scores
-			int bestScore = -10;
+			int bestScore = -20;
 			for (int i = 0; i < 3; i++)
 			{
 				for (int j = 0; j < 3; j++)
@@ -291,17 +305,12 @@ public class TicTacToe {
 					//Checking for available position
 					if (board[i][j] == 0)
 					{
-						board[i][j] = -1;
+						board[i][j] = 1;
 						//Recursive call
-						int score = miniMax(board, false, alpha, beta);
+						int score = miniMax(false, alpha, beta, depth + 1);
 						board[i][j] = 0;
 
 						//Pruning
-						alpha = Math.max(alpha, score);
-						if (beta <= alpha)
-						{
-							break;
-						}
 
 						//New best move
 						bestScore = Math.max(bestScore, score);
@@ -313,7 +322,7 @@ public class TicTacToe {
 		else
 		{
 			//Low scores
-			int bestScore = 10;
+			int bestScore = 30;
 			for (int i = 0; i < 3; i++)
 			{
 				for (int j = 0; j < 3; j++)
@@ -321,17 +330,12 @@ public class TicTacToe {
 					//Checking for available position
 					if (board[i][j] == 0)
 					{
-						board[i][j] = 1;
+						board[i][j] = -1;
 						//Recursive call
-						int score = miniMax(board, true, alpha, beta);
+						int score = miniMax(true, alpha, beta, depth + 1);
 						board[i][j] = 0;
 
 						//Pruning
-						beta = Math.min(beta, score);
-						if (beta <= alpha)
-						{
-							break;
-						}
 
 						//New best move
 						bestScore = Math.min(bestScore, score);
