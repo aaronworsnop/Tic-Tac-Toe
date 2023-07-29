@@ -1,3 +1,4 @@
+// Used for user input
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -187,8 +188,8 @@ public class TicTacToe {
     }
   }
 
-  // A win at depth 1 is worth 19 | A win at depth 9 is worth 10;
-  // A draw at depth 1 is worth 0 | A draw at depth 9 is worth 9;
+  // A win at depth 1 is worth 20 | A win at depth 9 is worth 11;
+  // A draw at depth 1 is worth 10 | A draw at depth 9 is worth 1;
   // A loss at depth 1 is worth -10 | A loss at depth 9 is worth -1;
 
   // This scoring system allows for the AI to always make THE best move, rather than A best move.
@@ -202,7 +203,7 @@ public class TicTacToe {
         // Checking for available position
         if (board[i][j] == 0) {
           board[i][j] = -1;
-          int score = miniMax(true, -20, 30, 0);
+          int score = miniMax(true, 30, -20, 0);
           board[i][j] = 0;
 
           // New best move
@@ -223,10 +224,10 @@ public class TicTacToe {
       // Lower depth is a higher win
       return 20 - depth;
     } else if (result == 0) {
-      // Lower depth is a lower tie
+      // Lower depth is a higher tie
       return depth;
     } else if (result == -1) {
-      // Lower depth is a higher loss
+      // Lower depth is a Higher loss
       return -10 + depth;
     }
 
@@ -242,14 +243,10 @@ public class TicTacToe {
             int score = miniMax(false, alpha, beta, depth + 1);
             board[i][j] = 0;
 
+            // Pruning
+
             // New best move
             bestScore = Math.max(bestScore, score);
-
-            // Alpha-beta pruning
-            alpha = Math.max(alpha, bestScore);
-            if (beta <= alpha) {
-              break;
-            }
           }
         }
       }
@@ -266,14 +263,10 @@ public class TicTacToe {
             int score = miniMax(true, alpha, beta, depth + 1);
             board[i][j] = 0;
 
+            // Pruning
+
             // New best move
             bestScore = Math.min(bestScore, score);
-
-            // Alpha-beta pruning
-            beta = Math.min(beta, bestScore);
-            if (beta <= alpha) {
-              break;
-            }
           }
         }
       }
