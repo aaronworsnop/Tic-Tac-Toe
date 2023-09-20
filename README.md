@@ -1,5 +1,7 @@
 # Tic Tac Toe
 ## AI Text-based terminal game
+`Java`
+
 This is an AI Tic Tac Toe game implemented in Java using the MiniMax algorithm with alpha-beta pruning. The final board states are rated based on their status (win, tie, and loss) and their depth, so the AI will always choose the move that is most advantageous, rather than an arbitrary advantageous move.
 
 *Feel free to give it a try!*
